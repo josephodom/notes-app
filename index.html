@@ -5,6 +5,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Notes.app</title>
+<link rel="stylesheet" href="bootstrap.min.css">
+<link rel="stylesheet" href="notes.css">
 <script type="text/javascript" src="vue.js"></script>
 <script type="text/javascript" src="notes.js"></script>
 </head>
@@ -21,9 +23,21 @@
 
 <main>
 	<div class="container">
-		<p>
-			Hello, World!
-		</p>
+		<section id="notes">
+			<ul class="list-inline">
+				<li v-for="note in notes">
+					<div class="note" v-bind:style="{ backgroundColor: note.color, }" v-bind:click="editing = note">
+						<ul class="list-inline note-color-bar" v-if="editing == note">
+							<li class="list-inline-item" v-for="color in colors">
+								<button name="color" v-bind:value="color" v-on:click="note.color = color" v-bind:style="{ backgroundColor: color }" v-bind:class="{ active: color == note.color }"></button>
+							</li>
+						</ul>
+						
+						{{ note.message }}
+					</div>
+				</li>
+			</ul>
+		</section>
 	</div>
 </main>
 
