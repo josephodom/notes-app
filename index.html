@@ -24,19 +24,56 @@
 <main>
 	<div class="container">
 		<section id="notes">
-			<ul class="list-inline">
+			<h2 class="mb-3">
+				Add, Edit, and Delete notes!
+			</h2>
+			
+			<ul>
+				<li>
+					Click a note to edit it. You can edit the background color, or the text
+				</li>
+				
+				<li>
+					When a note is selected, click the "Remove Note" button to delete it
+				</li>
+				
+				<li>
+					Click "Add Note" to add a new note
+				</li>
+			</ul>
+			
+			<ul class="list-inline" v-if="notes.length">
 				<li v-for="note in notes">
-					<div class="note" v-bind:style="{ backgroundColor: note.color, }" v-bind:click="editing = note">
-						<ul class="list-inline note-color-bar" v-if="editing == note">
-							<li class="list-inline-item" v-for="color in colors">
-								<button name="color" v-bind:value="color" v-on:click="note.color = color" v-bind:style="{ backgroundColor: color }" v-bind:class="{ active: color == note.color }"></button>
-							</li>
-						</ul>
+					<div class="note" v-bind:style="{ backgroundColor: note.color }" v-on:click="editing = note">
+						<div>
+							<button class="btn btn-danger" v-if="editing == note" v-on:click="removeNote(note)">
+								&times;
+								Remove Note
+							</button>
+							
+							<ul class="d-inline list-inline note-color-bar" v-if="editing == note">
+								<li class="list-inline-item" v-for="color in colors">
+									<button name="color" v-bind:value="color" v-on:click="note.color = color" v-bind:style="{ backgroundColor: color }" v-bind:class="{ active: color == note.color }"></button>
+								</li>
+							</ul>
+						</div>
 						
-						{{ note.message }}
+						<div v-bind:contenteditable="editing == note">
+							{{ note.message }}
+						</div>
 					</div>
 				</li>
 			</ul>
+			
+			<div class="alert alert-info" v-if="!notes.length">
+				No notes. Why not add one?
+			</div>
+			
+			<div>
+				<button class="btn btn-primary" v-on:click="addNote">
+					Add Note
+				</button>
+			</div>
 		</section>
 	</div>
 </main>
